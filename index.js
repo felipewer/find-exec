@@ -7,6 +7,7 @@ module.exports = function(){
 
   commands.some(function(c){
     var finder = findCommand()
+    console.log(finder.cmd, finder.args.concat([ c ]), spawn(finder.cmd, finder.args.concat([ c ])).status)
     if (spawn(finder.cmd, finder.args.concat([ c ])).status === 0){
       command = c
       return true
