@@ -1,4 +1,5 @@
-var exec = require('child_process').execSync
+// var exec = require('child_process').execSync
+var exec = require('sync-exec')
 var platform = require('os').platform()
 
 module.exports = function(){
