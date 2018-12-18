@@ -1,5 +1,4 @@
 var exec = require('child_process').execSync
-// var exec = require('sync-exec')
 var platform = require('os').platform()
 
 module.exports = function(){
@@ -7,7 +6,7 @@ module.exports = function(){
   var command = null
 
   commands.some(function(c){
-    if (exec(findCommand(c)).status === 0){
+    if (isExec(findCommand(c))){
       command = c
       return true
     }
@@ -16,10 +15,20 @@ module.exports = function(){
   return command
 }
 
+function isExec(command){
+  try{
+    exec(command)
+    return true
+  }
+  catch (_e){
+    return false
+  }
+}
+
 function findCommand(command){
-  if (/^win/.test(platform)) {
+  if (/^win/.test(platform)){
     return "where " + command
   } else {
-    return "command -v " + command + " >/dev/null 2>&1"
+    return "command -v " + command
   }
 }
