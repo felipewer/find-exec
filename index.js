@@ -1,4 +1,4 @@
-var spawn = require('child_process').spawnSync
+var exec = require('child_process').execSync
 var platform = require('os').platform()
 
 module.exports = function(){
@@ -6,9 +6,7 @@ module.exports = function(){
   var command = null
 
   commands.some(function(c){
-    var finder = findCommand()
-    console.log(finder.cmd, finder.args.concat([ c ]), spawn(finder.cmd, finder.args.concat([ c ])).status)
-    if (spawn(finder.cmd, finder.args.concat([ c ])).status === 0){
+    if (exec(findCommand(c)).status === 0){
       command = c
       return true
     }
@@ -17,10 +15,10 @@ module.exports = function(){
   return command
 }
 
-function findCommand(){
+function findCommand(command){
   if (/^win/.test(platform)) {
-    return { cmd: "where", args: [] }
+    return "where " + command
   } else {
-    return { cmd: "command", args: ['-v'] }
+    return "command -v " + command + " >/dev/null 2>&1"
   }
 }
